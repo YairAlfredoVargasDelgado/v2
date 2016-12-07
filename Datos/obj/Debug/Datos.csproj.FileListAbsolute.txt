@@ -1,0 +1,8 @@
+c:\users\the_a\documents\visual studio 2015\Projects\ControlV2\Datos\bin\Debug\Datos.dll.config
+c:\users\the_a\documents\visual studio 2015\Projects\ControlV2\Datos\bin\Debug\Datos.dll
+c:\users\the_a\documents\visual studio 2015\Projects\ControlV2\Datos\bin\Debug\Datos.pdb
+c:\users\the_a\documents\visual studio 2015\Projects\ControlV2\Datos\bin\Debug\Entidades.dll
+c:\users\the_a\documents\visual studio 2015\Projects\ControlV2\Datos\bin\Debug\Entidades.pdb
+c:\users\the_a\documents\visual studio 2015\Projects\ControlV2\Datos\obj\Debug\Datos.csprojResolveAssemblyReference.cache
+c:\users\the_a\documents\visual studio 2015\Projects\ControlV2\Datos\obj\Debug\Datos.dll
+c:\users\the_a\documents\visual studio 2015\Projects\ControlV2\Datos\obj\Debug\Datos.pdb

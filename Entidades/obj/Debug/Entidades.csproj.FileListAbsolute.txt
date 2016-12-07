@@ -1,0 +1,4 @@
+c:\users\the_a\documents\visual studio 2015\Projects\ControlV2\Entidades\bin\Debug\Entidades.dll
+c:\users\the_a\documents\visual studio 2015\Projects\ControlV2\Entidades\bin\Debug\Entidades.pdb
+c:\users\the_a\documents\visual studio 2015\Projects\ControlV2\Entidades\obj\Debug\Entidades.dll
+c:\users\the_a\documents\visual studio 2015\Projects\ControlV2\Entidades\obj\Debug\Entidades.pdb
