@@ -19,7 +19,7 @@ namespace Datos
             comandoActualizar.Parameters.AddWithValue("@CORREO_ELECTRÓNICO", entidad.CorreoElectrónico);
             comandoActualizar.Parameters.AddWithValue("@FECHA_DE_REGISTRO", entidad.FechaDeRegistro);
             comandoActualizar.Parameters.AddWithValue("@FOTOGRAFÍA", entidad.Fotografía);
-            comandoActualizar.Parameters.AddWithValue("@NOMBRE_DE_USUARIO", entidad.NombreDeUsuario);
+            comandoActualizar.Parameters.AddWithValue("@NOMBRE_USUARIO", entidad.NombreDeUsuario);
             comandoActualizar.Parameters.AddWithValue("@CONTRASEÑA", entidad.Contraseña);
             comandoActualizar.Parameters.AddWithValue("@ROL", entidad.Rol);
             ejecutarComando(comandoActualizar);
@@ -38,7 +38,6 @@ namespace Datos
                 return null;
             else
             {
-                var m = lector.GetByte((int)DatosUsuario.ROL);
                 Usuario usuario = new Usuario(
                     lector.GetString((int)DatosPersona.NOMBRE),
                     lector.GetString((int)DatosPersona.NÚMERO_DE_CÉDULA),

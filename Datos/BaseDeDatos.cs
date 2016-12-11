@@ -48,7 +48,7 @@ namespace Datos
 
         public void eliminar(string clave, string criterio, string nombreTabla)
         {
-            string QueryEliminar = "DELETE FROM '" + nombreTabla + "' WHERE '" + criterio + "' = @CLAVE";
+            string QueryEliminar = "DELETE FROM " + nombreTabla + " WHERE " + criterio + " = @CLAVE";
             abrirConexión();
             SqlCommand comandoEliminar = new SqlCommand(QueryEliminar);
             comandoEliminar.Parameters.AddWithValue("@CLAVE", clave);

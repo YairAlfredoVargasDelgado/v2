@@ -12,6 +12,7 @@ namespace ControlV2
 {
     public partial class FrmRegistrarUsuario : Form
     {
+        private DateTime fechaRegistro;
         private VideoCaptureDevice camara = null;
 
         public FrmRegistrarUsuario()
@@ -76,6 +77,8 @@ namespace ControlV2
                 usuarios.insertar(new Usuario(txtBxNombres.Text + ";" + txtBxApellidos.Text, txtBxNúmeroDeCédula.Text, (byte)cmbBxGénero.SelectedIndex,
                     short.Parse(txtBxEdad.Text), txtBxPrefijoTeléfono.Text + ";" + txtBxTeléfono.Text, txtBxDirección.Text,
                     txtBxCorreoElectrónico.Text, DateTime.Today, "foto.png", txtBxNombreDeUsuario.Text, txtBxContraseña.Text, (byte)cmbBxRol.SelectedIndex));
+                MessageBox.Show("Registro llevado a cabo con éxito", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                limpiarControles();
             }
         }
         
@@ -132,12 +135,63 @@ namespace ControlV2
                 txtBx.BackColor = Color.White;
         }
 
+        private void limpiarControles()
+        {
+            Action<Control.ControlCollection> func = null;
+            func = (controls) =>
+            {
+                foreach (Control control in controls)
+                    if (control is TextBox)
+                        (control as TextBox).Clear();
+                    else
+                        func(control.Controls);
+            };
+            func(Controls);
+        }
+
+        private void deshabilitarControles()
+        {
+            Action<Control.ControlCollection> func = null;
+            func = (controls) =>
+            {
+                foreach (Control control in controls)
+                {
+                    if (control is TextBox)
+                        (control as TextBox).Enabled = false;
+                    if (control is ComboBox)
+                        (control as ComboBox).Enabled = false;
+                    else
+                        func(control.Controls);
+                }
+            };
+            func(Controls);
+        }
+
+        private void habilitarControles()
+        {
+            Action<Control.ControlCollection> func = null;
+            func = (controls) =>
+            {
+                foreach (Control control in controls)
+                {
+                    if (control is TextBox)
+                        (control as TextBox).Enabled = true;
+                    if (control is ComboBox)
+                        (control as ComboBox).Enabled = true;
+                    else
+                        func(control.Controls);
+                }
+            };
+            func(Controls);
+        }
+
         private void btnEditar_Click(object sender, EventArgs e)
         {
+            Usuario usuario = null;
+            BaseDeDatosUsuarios usuarios = new BaseDeDatosUsuarios();
             if (btnEditar.Text == "Editar")
             {
-                BaseDeDatosUsuarios usuarios = new BaseDeDatosUsuarios();
-                Usuario usuario = usuarios.conseguir(txtBxNúmeroDeCédula.Text);
+                usuario = usuarios.conseguir(txtBxNúmeroDeCédula.Text);
                 if (usuario != null)
                 {
                     btnRegistrar.Enabled = btnEliminar.Enabled = false;
@@ -150,11 +204,86 @@ namespace ControlV2
                     string[] teléfonoCompleto = usuario.Teléfono.Split(';');
                     txtBxPrefijoTeléfono.Text = teléfonoCompleto[0];
                     txtBxTeléfono.Text = teléfonoCompleto[1];
+                    txtBxDirección.Text = usuario.Dirección;
+                    txtBxCorreoElectrónico.Text = usuario.CorreoElectrónico;
+                    txtBxNombreDeUsuario.Text = usuario.NombreDeUsuario;
+                    cmbBxRol.SelectedIndex = usuario.Rol;
+                    txtBxContraseña.Text = usuario.Contraseña;
+                    fechaRegistro = usuario.FechaDeRegistro;
+                    btnEditar.Text = "Continuar";
+                }
+                else
+                {
+                    MessageBox.Show("Este usuario no está registrado", "Usuario no registrado", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
             else
             {
+                usuarios.actualizar(new Usuario(txtBxNombres.Text + ";" + txtBxApellidos.Text, txtBxNúmeroDeCédula.Text,
+                    (byte)cmbBxGénero.SelectedIndex, short.Parse(txtBxEdad.Text), txtBxPrefijoTeléfono.Text + ";" + txtBxTeléfono.Text,
+                    txtBxDirección.Text, txtBxCorreoElectrónico.Text, fechaRegistro, "hojita.png",
+                    txtBxNombreDeUsuario.Text, txtBxContraseña.Text, (byte)cmbBxRol.SelectedIndex));
+                MessageBox.Show("Datos actualizados con éxito", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                btnEditar.Text = "Editar";
+                btnRegistrar.Enabled = txtBxNúmeroDeCédula.Enabled = true;
+                limpiarControles();
+            }
+        }
 
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            txtBxNúmeroDeCédula.Enabled = true;
+            if (btnEditar.Text == "Continuar")
+                btnEditar.Text = "Editar";
+            else if (btnEliminar.Text == "Continuar")
+            {
+                btnEliminar.Text = "Eliminar";
+                habilitarControles();
+            }
+            btnRegistrar.Enabled = true;
+            limpiarControles();
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            BaseDeDatosUsuarios usuarios = new BaseDeDatosUsuarios();
+            if (btnEliminar.Text == "Eliminar")
+            {
+                Usuario usuario = usuarios.conseguir(txtBxNúmeroDeCédula.Text);
+                if (usuario != null)
+                {
+                    btnEditar.Enabled = btnRegistrar.Enabled = false;
+                    string[] nombreCompleto = usuario.Nombre.Split(';');
+                    txtBxNombres.Text = nombreCompleto[0];
+                    txtBxApellidos.Text = nombreCompleto[1];
+                    cmbBxGénero.SelectedIndex = usuario.Género;
+                    txtBxEdad.Text = usuario.Edad.ToString();
+                    txtBxNúmeroDeCédula.Enabled = false;
+                    string[] teléfonoCompleto = usuario.Teléfono.Split(';');
+                    txtBxPrefijoTeléfono.Text = teléfonoCompleto[0];
+                    txtBxTeléfono.Text = teléfonoCompleto[1];
+                    txtBxDirección.Text = usuario.Dirección;
+                    txtBxCorreoElectrónico.Text = usuario.CorreoElectrónico;
+                    txtBxNombreDeUsuario.Text = usuario.NombreDeUsuario;
+                    cmbBxRol.SelectedIndex = usuario.Rol;
+                    txtBxContraseña.Text = usuario.Contraseña;
+                    fechaRegistro = usuario.FechaDeRegistro;
+                    deshabilitarControles();
+                    btnEliminar.Text = "Continuar";
+                }
+                else
+                {
+                    MessageBox.Show("Este usuario no está registrado", "Usuario no registrado", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+            }
+            else
+            {
+                usuarios.eliminar(txtBxNúmeroDeCédula.Text, "NÚMERO_DE_CÉDULA", "USUARIOS");
+                MessageBox.Show("Usuario eliminado con éxito", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                btnEliminar.Text = "Eliminar";
+                btnRegistrar.Enabled = txtBxNúmeroDeCédula.Enabled = true;
+                limpiarControles();
+                habilitarControles();
             }
         }
     }
